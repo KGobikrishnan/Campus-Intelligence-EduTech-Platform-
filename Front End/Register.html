@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Intelligence - Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --background: #f0f2f5;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Left Panel - Branding */
+        .brand-panel {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .brand-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="white" x="0" y="0" width="100" height="100"/><path fill="%234361ee" d="M30,30L70,30L70,70L30,70Z"/></svg>');
+            background-size: cover;
+        }
+        
+        .brand-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .brand-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .brand-description {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .features-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        
+        .features-list i {
+            margin-right: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Right Panel - Registration Form */
+        .form-panel {
+            flex: 1.2;
+            background: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .form-header {
+            margin-bottom: 30px;
+        }
+        
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .form-subtitle {
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .form-subtitle a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-subtitle a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: white;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+        }
+        
+        .form-select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .terms-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .terms-check {
+            margin-right: 12px;
+            margin-top: 3px;
+        }
+        
+        .terms-label {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .terms-label a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .terms-label a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 16px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-google {
+            background: white;
+            color: #555;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        
+        .btn-google:hover {
+            background: #f9f9f9;
+        }
+        
+        .btn-google i {
+            margin-right: 10px;
+            color: #DB4437;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #eee;
+        }
+        
+        .divider-text {
+            padding: 0 15px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .brand-panel {
+                padding: 30px;
+                border-radius: 10px 10px 0 0;
+            }
+            
+            .form-panel {
+                padding: 30px;
+                border-radius: 0 0 10px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .brand-panel, .form-panel {
+                padding: 25px;
+            }
+            
+            .brand-title {
+                font-size: 24px;
+            }
+            
+            .form-title {
+                font-size: 22px;
+            }
+        }
+        
+        /* Form Validation Styles */
+        .error-message {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-input.error {
+            border-color: var(--danger);
+        }
+        
+        .form-input.success {
+            border-color: #2ecc71;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel - Branding -->
+        <div class="brand-panel">
+            <div class="brand-background"></div>
+            <div class="brand-content">
+                <div class="logo">
+                    <div class="logo-icon">CI</div>
+                    <span>Campus Intelligence</span>
+                </div>
+                
+                <h2 class="brand-title">Join Our Learning Community</h2>
+                <p class="brand-description">Create your account to access personalized learning analytics, AI-powered insights, and academic success tools.</p>
+                
+                <ul class="features-list">
+                    <li class="animated">
+                        <i class="fas fa-robot"></i>
+                        <span>AI-powered learning recommendations</span>
+                    </li>
+                    <li class="animated delay-1">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Track your academic performance</span>
+                    </li>
+                    <li class="animated delay-2">
+                        <i class="fas fa-bell"></i>
+                        <span>Personalized notifications</span>
+                    </li>
+                    <li class="animated delay-3">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Connect with instructors</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Right Panel - Registration Form -->
+        <div class="form-panel">
+            <div class="form-header">
+                <h2 class="form-title">Create Account</h2>
+                <p class="form-subtitle">Already have an account? <a href="login.html">Sign in here</a></p>
+            </div>
+            
+            <form id="registrationForm">
+                <button type="button" class="btn btn-google">
+                    <i class="fab fa-google"></i> Sign up with Google
+                </button>
+                
+                <div class="divider">
+                    <span class="divider-text">Or continue with email</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="error-message">Please enter your full name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                    <div class="error-message">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" class="form-input" id="password" placeholder="Create a password" required>
+                        <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
+                    </div>
+                    <div class="error-message">Password must be at least 8 characters</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" class="form-input" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="error-message">Passwords do not match</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select class="form-select" required>
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                    <div class="error-message">Please select your role</div>
+                </div>
+                
+                <div class="terms-group">
+                    <input type="checkbox" class="terms-check" id="termsCheck" required>
+                    <label for="termsCheck" class="terms-label">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I consent to the collection and use of my data in accordance with Campus Intelligence's data policy.
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registrationForm = document.getElementById('registrationForm');
+            const passwordToggle = document.getElementById('passwordToggle');
+            const passwordInput = document.getElementById('password');
+            
+            // Password visibility toggle
+            passwordToggle.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordToggle.classList.remove('fa-eye');
+                    passwordToggle.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    passwordToggle.classList.remove('fa-eye-slash');
+                    passwordToggle.classList.add('fa-eye');
+                }
+            });
+            
+            // Form validation
+            registrationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                const inputs = registrationForm.querySelectorAll('input, select');
+                
+                inputs.forEach(input => {
+                    const errorMessage = input.closest('.form-group')?.querySelector('.error-message');
+                    
+                    // Reset styles and messages
+                    input.classList.remove('error', 'success');
+                    if (errorMessage) errorMessage.style.display = 'none';
+                    
+                    // Validate required fields
+                    if (input.hasAttribute('required') && !input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('error');
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    }
+                    
+                    // Validate email format
+                    if (input.type === 'email' && input.value) {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(input.value)) {
+                            isValid = false;
+                            input.classList.add('error');
+                            if (errorMessage) {
+                                errorMessage.textContent = 'Please enter a valid email address';
+                                errorMessage.style.display = 'block';
+                            }
+                        }
+                    }
+                    
+                    // Validate password length
+                    if (input.id === 'password' && input.value.length < 8) {
+                        isValid = false;
+                        input.classList.add('error');
+                        if (errorMessage) {
+                            errorMessage.textContent = 'Password must be at least 8 characters';
+                            errorMessage.style.display = 'block';
+                        }
+                    }
+                    
+                    // Validate password match
+                    if (input.type === 'password' && input.placeholder.includes('Confirm')) {
+                        const password = document.getElementById('password').value;
+                        if (input.value !== password) {
+                            isValid = false;
+                            input.classList.add('error');
+                            if (errorMessage) {
+                                errorMessage.textContent = 'Passwords do not match';
+                                errorMessage.style.display = 'block';
+                            }
+                        }
+                    }
+                    
+                    // Add success state for valid fields
+                    if (input.value && !input.classList.contains('error')) {
+                        input.classList.add('success');
+                    }
+                });
+                
+                // Check terms agreement
+                const termsCheck = document.getElementById('termsCheck');
+                if (!termsCheck.checked) {
+                    isValid = false;
+                    alert('Please agree to the Terms of Service and Privacy Policy');
+                }
+                
+                if (isValid) {
+                    // Simulate form submission
+                    const submitBtn = registrationForm.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        alert('Account created successfully! Redirecting to login...');
+                        window.location.href = 'login.html';
+                    }, 1500);
+                }
+            });
+            
+            // Real-time validation
+            const inputs = registrationForm.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    const errorMessage = this.closest('.form-group')?.querySelector('.error-message');
+                    
+                    // Reset state
+                    this.classList.remove('error', 'success');
+                    if (errorMessage) errorMessage.style.display = 'none';
+                    
+                    // Validate based on input type
+                    if (this.hasAttribute('required') && !this.value.trim()) {
+                        this.classList.add('error');
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    } else if (this.type === 'email' && this.value) {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(this.value)) {
+                            this.classList.add('error');
+                            if (errorMessage) {
+                                errorMessage.textContent = 'Please enter a valid email address';
+                                errorMessage.style.display = 'block';
+                            }
+                        } else {
+                            this.classList.add('success');
+                        }
+                    } else if (this.id === 'password' && this.value.length < 8) {
+                        this.classList.add('error');
+                        if (errorMessage) {
+                            errorMessage.textContent = 'Password must be at least 8 characters';
+                            errorMessage.style.display = 'block';
+                        }
+                    } else if (this.type === 'password' && this.placeholder.includes('Confirm')) {
+                        const password = document.getElementById('password').value;
+                        if (this.value !== password) {
+                            this.classList.add('error');
+                            if (errorMessage) {
+                                errorMessage.textContent = 'Passwords do not match';
+                                errorMessage.style.display = 'block';
+                            }
+                        } else if (this.value) {
+                            this.classList.add('success');
+                        }
+                    } else if (this.value) {
+                        this.classList.add('success');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
