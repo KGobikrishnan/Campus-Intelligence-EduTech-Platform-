@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Login - Campus Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --background: #f0f2f5;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Left Panel - Branding */
+        .brand-panel {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .brand-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="white" x="0" y="0" width="100" height="100"/><path fill="%234361ee" d="M30,30L70,30L70,70L30,70Z"/></svg>');
+            background-size: cover;
+        }
+        
+        .brand-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .brand-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .brand-description {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .features-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        
+        .features-list i {
+            margin-right: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Right Panel - Login Form */
+        .form-panel {
+            flex: 1;
+            background: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .form-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .form-subtitle {
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .form-subtitle a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-subtitle a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-check {
+            margin-right: 8px;
+        }
+        
+        .remember-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .forgot-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 16px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-admin {
+            background: white;
+            color: #555;
+            border: 1px solid #ddd;
+            margin-top: 15px;
+        }
+        
+        .btn-admin:hover {
+            background: #f9f9f9;
+        }
+        
+        /* Role Selection */
+        .role-selection {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .role-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .role-btn.active {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .role-btn i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .brand-panel {
+                padding: 30px;
+                border-radius: 10px 10px 0 0;
+            }
+            
+            .form-panel {
+                padding: 30px;
+                border-radius: 0 0 10px 10px;
+            }
+            
+            .role-selection {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .brand-panel, .form-panel {
+                padding: 25px;
+            }
+            
+            .brand-title {
+                font-size: 24px;
+            }
+            
+            .form-title {
+                font-size: 22px;
+            }
+            
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+        
+        /* Form Validation Styles */
+        .error-message {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-input.error {
+            border-color: var(--danger);
+        }
+        
+        .form-input.success {
+            border-color: #2ecc71;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        
+        /* Loading animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel - Branding -->
+        <div class="brand-panel">
+            <div class="brand-background"></div>
+            <div class="brand-content">
+                <div class="logo">
+                    <div class="logo-icon">CI</div>
+                    <span>Campus Intelligence</span>
+                </div>
+                
+                <h2 class="brand-title">Faculty Portal</h2>
+                <p class="brand-description">Access your teaching dashboard to manage courses, track student performance, and create engaging learning experiences.</p>
+                
+                <ul class="features-list">
+                    <li class="animated">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Course management tools</span>
+                    </li>
+                    <li class="animated delay-1">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Student performance analytics</span>
+                    </li>
+                    <li class="animated delay-2">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignment tracking & grading</span>
+                    </li>
+                    <li class="animated delay-3">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Student engagement insights</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Right Panel - Login Form -->
+        <div class="form-panel">
+            <div class="form-header">
+                <h2 class="form-title">Faculty Sign In</h2>
+                <p class="form-subtitle">Student login? <a href="../Login.html">Click here</a></p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" class="form-input" placeholder="Enter your faculty email" required>
+                    </div>
+                    <div class="error-message">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" class="form-input" id="password" placeholder="Enter your password" required>
+                        <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
+                    </div>
+                    <div class="error-message">Please enter your password</div>
+                </div>
+                
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" class="remember-check" id="rememberCheck">
+                        <label for="rememberCheck" class="remember-label">Remember me</label>
+                    </div>
+                    <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Sign In</button>
+                
+                <button type="button" class="btn btn-admin" onclick="location.href='../AdminLogin.html'">
+                    <i class="fas fa-user-shield"></i> Admin Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const passwordToggle = document.getElementById('passwordToggle');
+            const passwordInput = document.getElementById('password');
+            
+            // Password visibility toggle
+            passwordToggle.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordToggle.classList.remove('fa-eye');
+                    passwordToggle.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    passwordToggle.classList.remove('fa-eye-slash');
+                    passwordToggle.classList.add('fa-eye');
+                }
+            });
+            
+            // Form validation
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                const inputs = loginForm.querySelectorAll('input[required]');
+                
+                inputs.forEach(input => {
+                    const errorMessage = input.closest('.form-group')?.querySelector('.error-message');
+                    
+                    // Reset styles and messages
+                    input.classList.remove('error', 'success');
+                    if (errorMessage) errorMessage.style.display = 'none';
+                    
+                    // Validate required fields
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('error');
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    }
+                    
+                    // Validate email format
+                    if (input.type === 'email' && input.value) {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(input.value)) {
+                            isValid = false;
+                            input.classList.add('error');
+                            if (errorMessage) {
+                                errorMessage.textContent = 'Please enter a valid email address';
+                                errorMessage.style.display = 'block';
+                            }
+                        } else {
+                            input.classList.add('success');
+                        }
+                    } else if (input.value) {
+                        input.classList.add('success');
+                    }
+                });
+                
+                if (isValid) {
+                    // Simulate login process
+                    const submitBtn = loginForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner"></i> Signing In...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // Success - redirect to dashboard
+                        alert('Successfully logged in! Redirecting to faculty dashboard...');
+                        window.location.href = 'FacultyDashboard.html';
+                        
+                        // In case of error, you would reset the button
+                        // submitBtn.innerHTML = originalText;
+                        // submitBtn.disabled = false;
+                        // alert('Login failed. Please check your credentials and try again.');
+                    }, 1500);
+                }
+            });
+            
+            // Real-time validation
+            const inputs = loginForm.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    const errorMessage = this.closest('.form-group')?.querySelector('.error-message');
+                    
+                    // Reset state
+                    this.classList.remove('error', 'success');
+                    if (errorMessage) errorMessage.style.display = 'none';
+                    
+                    // Validate based on input type
+                    if (this.hasAttribute('required') && !this.value.trim()) {
+                        this.classList.add('error');
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    } else if (this.type === 'email' && this.value) {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(this.value)) {
+                            this.classList.add('error');
+                            if (errorMessage) {
+                                errorMessage.textContent = 'Please enter a valid email address';
+                                errorMessage.style.display = 'block';
+                            }
+                        } else {
+                            this.classList.add('success');
+                        }
+                    } else if (this.value) {
+                        this.classList.add('success');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

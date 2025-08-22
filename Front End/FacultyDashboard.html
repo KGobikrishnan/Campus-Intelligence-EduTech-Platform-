@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - Campus Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --background: #f0f2f5;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --sidebar-width: 250px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: var(--primary);
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid white;
+        }
+        
+        .nav-item i {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .notification-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .notification-btn:hover {
+            background: #e9e9e9;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--danger);
+            color: white;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background: #e9e9e9;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .card-value {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .card-change {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .positive {
+            color: #2ecc71;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        /* Charts Section */
+        .charts {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        /* Recent Activity */
+        .recent-activity {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+        
+        .activity-list {
+            list-style: none;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+        }
+        
+        .activity-details {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .activity-info {
+            flex: 1;
+        }
+        
+        .activity-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .activity-action {
+            font-size: 14px;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        /* Upcoming Deadlines */
+        .upcoming-deadlines {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .deadline-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .deadline-item:last-child {
+            border-bottom: none;
+        }
+        
+        .deadline-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+        }
+        
+        .deadline-details {
+            flex: 1;
+        }
+        
+        .deadline-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .deadline-course {
+            font-size: 13px;
+            color: #888;
+        }
+        
+        .deadline-countdown {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--warning);
+        }
+        
+        /* Footer */
+        .footer {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .footer-link {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .charts {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+                padding: 10px 0;
+            }
+            
+            .nav-item {
+                padding: 8px 15px;
+                margin: 0 5px;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                white-space: nowrap;
+            }
+            
+            .nav-item:hover, .nav-item.active {
+                border-left: none;
+                border-bottom: 3px solid white;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .activity-details {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .activity-action {
+                margin-top: 5px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        
+        /* Dark Mode */
+        body.dark-mode {
+            --background: #121826;
+            --dark: #f8f9fa;
+            --light: #1e293b;
+        }
+        
+        body.dark-mode .card,
+        body.dark-mode .header,
+        body.dark-mode .chart-container,
+        body.dark-mode .recent-activity,
+        body.dark-mode .upcoming-deadlines,
+        body.dark-mode .footer {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .card-title,
+        body.dark-mode .activity-time,
+        body.dark-mode .deadline-time {
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .form-input {
+            background: #1e293b;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon">CI</div>
+                <div class="logo">Campus Intelligence</div>
+            </div>
+            
+            <div class="nav-links">
+                <div class="nav-item active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>Assignments</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Performance Analytics</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Discussion Forum</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="page-title">Faculty Dashboard</h1>
+                <div class="header-actions">
+                    <div class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <div class="notification-badge">3</div>
+                    </div>
+                    <div class="user-info">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <div>
+                            <div>Dr. Robert Kim</div>
+                            <div style="font-size: 12px; color: #666;">Computer Science Department</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Cards -->
+            <div class="dashboard-cards">
+                <div class="card animated">
+                    <div class="card-header">
+                        <div class="card-title">Active Courses</div>
+                        <div class="card-icon" style="background-color: var(--primary);">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">5</div>
+                    <div class="card-change positive">+1 from last semester</div>
+                </div>
+                
+                <div class="card animated delay-1">
+                    <div class="card-header">
+                        <div class="card-title">Total Students</div>
+                        <div class="card-icon" style="background-color: var(--success);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">142</div>
+                    <div class="card-change positive">+12 from last month</div>
+                </div>
+                
+                <div class="card animated delay-2">
+                    <div class="card-header">
+                        <div class="card-title">Assignments Due</div>
+                        <div class="card-icon" style="background-color: var(--warning);">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">7</div>
+                    <div class="card-change negative">+3 this week</div>
+                </div>
+                
+                <div class="card animated delay-3">
+                    <div class="card-header">
+                        <div class="card-title">Avg. Performance</div>
+                        <div class="card-icon" style="background-color: var(--info);">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">84%</div>
+                    <div class="card-change positive">+5% this semester</div>
+                </div>
+            </div>
+            
+            <!-- Charts Section -->
+            <div class="charts">
+                <div class="chart-container">
+                    <h3 class="chart-title">Student Performance Overview</h3>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 class="chart-title">Grade Distribution</h3>
+                    <canvas id="gradeDistributionChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h3 class="chart-title">Recent Activity</h3>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon" style="background-color: var(--success);">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-info">
+                                <div class="activity-name">Assignment graded - Data Structures Week 5</div>
+                                <div class="activity-time">Today, 10:30 AM</div>
+                            </div>
+                            <div class="activity-action">View Details</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon" style="background-color: var(--primary);">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-info">
+                                <div class="activity-name">New course material uploaded to Algorithms</div>
+                                <div class="activity-time">Yesterday, 3:45 PM</div>
+                            </div>
+                            <div class="activity-action">View Course</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon" style="background-color: var(--info);">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-info">
+                                <div class="activity-name">New question in Database Systems forum</div>
+                                <div class="activity-time">April 5, 11:20 AM</div>
+                            </div>
+                            <div class="activity-action">Respond</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon" style="background-color: var(--warning);">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-info">
+                                <div class="activity-name">Student attendance alert - Emily Chen</div>
+                                <div class="activity-time">April 4, 2:15 PM</div>
+                            </div>
+                            <div class="activity-action">View Report</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Upcoming Deadlines -->
+            <div class="upcoming-deadlines">
+                <h3 class="chart-title">Upcoming Deadlines</h3>
+                
+                <div class="deadline-item">
+                    <div class="deadline-icon" style="background-color: var(--warning);">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="deadline-details">
+                        <div class="deadline-name">Data Structures - Assignment 6</div>
+                        <div class="deadline-course">CS202 - Data Structures</div>
+                    </div>
+                    <div class="deadline-countdown">3 days left</div>
+                </div>
+                
+                <div class="deadline-item">
+                    <div class="deadline-icon" style="background-color: var(--info);">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="deadline-details">
+                        <div class="deadline-name">Algorithms - Project Submission</div>
+                        <div class="deadline-course">CS301 - Algorithms</div>
+                    </div>
+                    <div class="deadline-countdown">10 days left</div>
+                </div>
+                
+                <div class="deadline-item">
+                    <div class="deadline-icon" style="background-color: var(--danger);">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="deadline-details">
+                        <div class="deadline-name">Database Systems - Final Exam</div>
+                        <div class="deadline-course">CS205 - Database Systems</div>
+                    </div>
+                    <div class="deadline-countdown">23 days left</div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">About</a>
+                    <a href="#" class="footer-link">Contact</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                </div>
+                <div>© 2023 Campus Intelligence. All rights reserved.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            const performanceChart = new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                    datasets: [{
+                        label: 'Class Average',
+                        data: [72, 75, 78, 80, 82, 84],
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#4361ee',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 60,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Grade Distribution Chart
+            const distributionCtx = document.getElementById('gradeDistributionChart').getContext('2d');
+            const distributionChart = new Chart(distributionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['A (90-100%)', 'B (80-89%)', 'C (70-79%)', 'D (60-69%)', 'F (<60%)'],
+                    datasets: [{
+                        data: [25, 45, 20, 7, 3],
+                        backgroundColor: [
+                            '#2ecc71',
+                            '#3498db',
+                            '#f39c12',
+                            '#e74c3c',
+                            '#95a5a6'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+            
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+            
+            // Check for saved theme preference
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+            
+            // Navigation item click
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (this.querySelector('span').textContent === 'Logout') {
+                        if (confirm('Are you sure you want to logout?')) {
+                            alert('Logging out...');
+                            window.location.href = 'FacultyLogin.html';
+                        }
+                        return;
+                    }
+                    
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // In a real app, this would navigate to different pages
+                    const pageName = this.querySelector('span').textContent;
+                    document.querySelector('.page-title').textContent = pageName;
+                });
+            });
+            
+            // Notification button click
+            const notificationBtn = document.querySelector('.notification-btn');
+            
+            notificationBtn.addEventListener('click', function() {
+                alert('Notifications panel would open here');
+            });
+        });
+    </script>
+</body>
+</html>
